@@ -1,0 +1,121 @@
+# Ace 语义意图识别系统（Semantic Intent Recognition Engine）
+
+## 1. 系统简介
+
+Ace 语义意图识别系统（SIRE）是一个用于理解、分类和追踪用户语言中“表达目的”的核心引擎，采用自定义的**三级语义意图分类结构**，结合 GPT 类语言模型进行语义路径识别，并持续记录用户对各类表达意图的掌握熟练度。
+
+---
+
+## 2. 意图分类结构（Semantic Intent Tree）
+
+### **Level 1 — 表达功能层（Communicative Function）**
+语言的基本使用目的：
+
+- `state`：陈述事实、表达状态（描述、解释、对比等）
+- `request`：请求、询问、征求
+- `evaluate`：表达态度（喜欢、不满、赞扬、批评等）
+- `suggest`：建议、提议、引导
+- `justify`：解释、说明原因、辩护
+- `emotion`：表达情感（高兴、担忧、愤怒、伤心等）
+- `conclude`：总结、归纳、概括
+
+### **Level 2 — 语用语境层（Pragmatic Context）**
+表达发生的语境、交流对象或语气语用：
+
+- `social`：日常社交（朋友、家庭）
+- `professional`：职场或正式环境（会议、邮件、文案）
+- `academic`：教育、研究、论文、课堂
+- `travel`：旅游场景（问路、订票）
+- `civic`：政府、医院、银行等公共服务
+- `emotional`：亲密/情感交流场合
+
+### **Level 3 — 微意图单元层（Atomic Semantic Units）**
+实际表达的语义原子单元（意图叶节点）：
+
+- `state.compare.two_items`：对比两件事物
+- `justify.explain.reason`：说明理由
+- `suggest.advise.alternative`：提出备选建议
+- `request.help.direction`：请求帮助（问路）
+- `emotion.express.concern`：表达担忧
+- `evaluate.criticize.solution`：批评某个方案
+- `conclude.summarize.points`：总结观点
+- ...（可拓展为 500+ 个标签）
+
+---
+
+## 3. 技术架构
+
+- **意图分类器（IntentClassifier）**
+  - 输入：任意句子、段落、作文、口语内容
+  - 输出：三级意图路径，如：
+    ```json
+    {
+      "level1": "justify",
+      "level2": "academic",
+      "level3": "justify.explain.reason"
+    }
+    ```
+
+- **熟练度追踪器（IntentSkillTracker）**
+  - 每个意图单元下设评分：`score ∈ [0, 5]`
+  - 根据用户表达的清晰度、准确性、自然度由 GPT 给出评估
+
+- **意图热图（IntentRadarMap）**
+  - 可视化用户在各类表达意图上的掌握情况
+  - 用于推荐重点训练方向或展示成长路径
+
+---
+
+## 4. 应用场景
+
+### **LangSynapse**
+- 用于分析用户作文、口语练习的意图分布
+- 自动生成训练建议：强化表达、补足缺失意图
+- 建立个性化意图成长地图
+
+### **MeshMind**
+- 虚拟角色的表达风格由“意图偏好图谱”驱动
+- 不同人格模型→不同表达风格组合→真实对话模拟
+
+### **AI 写作助手**
+- 根据意图规划全文结构
+- 标注每段意图标签（提升可解释性）
+- 控制 AI 生成的写作“目的”与“语境”
+
+---
+
+## 5. API 设计草案
+
+```http
+POST /api/classify-intent
+{
+  "text": "I don't think this plan will work in the long term."
+}
+
+Response:
+{
+  "level1": "evaluate",
+  "level2": "academic",
+  "level3": "evaluate.criticize.solution"
+}
+6. 技术优势与可扩展性
+优势
+描述
+原创性强
+自定义语义分类树，非嵌入模糊分类
+可解释性强
+每句输出明确结构意图路径
+适应多语言
+可在法语、英语、中文等多语言中复用意图树
+个性化追踪
+用户画像 → 意图熟练度图谱持续更新
+易于对接
+适配写作、对话、评估、生成、教育等7. 后续工作建议
+	•	构建语义意图树可视化工具
+	•	收集用户表达数据训练意图提示样本
+	•	支持自定义语境扩展意图标签
+	•	封装 API 形成独立对外服务模块（IntellectAPI
+
+
+
+
